@@ -10,212 +10,154 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
 <style>
-* { box-sizing: border-box; }
-
-body {
-    margin: 0;
-    font-family: 'Inter', 'Segoe UI', sans-serif;
-    background: #0f0f14;
-    color: #e4e4e7;
-    padding: 24px;
+*{box-sizing:border-box}
+body{
+margin:0;
+font-family:'Inter','Segoe UI',sans-serif;
+background:#0f0f14;
+color:#e4e4e7;
+padding:24px;
 }
-
-/* HEADER */
-.header {
-    text-align: center;
-    margin-bottom: 40px;
+.header{text-align:center;margin-bottom:40px}
+.logo{width:200px;height:60px;object-fit:contain;margin-bottom:10px}
+h1{
+margin:0;
+font-weight:600;
+background:linear-gradient(90deg,#a855f7,#7c3aed);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
 }
-
-.logo {
-    width: 200px;
-    height: 60px;
-    object-fit: contain;
-    margin-bottom: 10px;
+.controls{
+display:flex;
+justify-content:center;
+gap:16px;
+margin-bottom:30px;
+flex-wrap:wrap;
 }
-
-h1 {
-    margin: 0;
-    font-weight: 600;
-    background: linear-gradient(90deg,#a855f7,#7c3aed);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+select{
+padding:10px 16px;
+border-radius:10px;
+border:1px solid #27272f;
+background:#1a1a23;
+color:#e4e4e7;
+font-size:14px;
 }
-
-/* CONTROLS */
-.controls {
-    display: flex;
-    justify-content: center;
-    gap: 16px;
-    margin-bottom: 30px;
-    flex-wrap: wrap;
+.card{
+background:#1a1a23;
+border-radius:18px;
+padding:22px;
+margin-bottom:25px;
+border:1px solid #27272f;
+box-shadow:0 0 25px rgba(124,58,237,0.05);
 }
-
-select {
-    padding: 10px 16px;
-    border-radius: 10px;
-    border: 1px solid #27272f;
-    background: #1a1a23;
-    color: #e4e4e7;
-    font-size: 14px;
+.section-title{
+font-size:14px;
+margin-bottom:18px;
+font-weight:600;
+color:#a855f7;
+text-transform:uppercase;
+letter-spacing:1px;
 }
-
-/* CARD */
-.card {
-    background: #1a1a23;
-    border-radius: 18px;
-    padding: 22px;
-    margin-bottom: 25px;
-    border: 1px solid #27272f;
-    box-shadow: 0 0 25px rgba(124,58,237,0.05);
+.holiday-item{
+padding:12px 0;
+border-bottom:1px solid #27272f;
 }
-
-.section-title {
-    font-size: 14px;
-    margin-bottom: 18px;
-    font-weight: 600;
-    color: #a855f7;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+.holiday-item:last-child{border-bottom:none}
+.badge{
+display:inline-block;
+padding:6px 12px;
+border-radius:30px;
+font-size:12px;
+font-weight:600;
+margin-top:6px;
 }
-
-.holiday-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 14px 0;
-    border-bottom: 1px solid #27272f;
-}
-
-.holiday-item:last-child {
-    border-bottom: none;
-}
-
-.date-big {
-    font-size: 14px;
-    font-weight: 500;
-    color: #d4d4d8;
-}
-
-/* BADGES */
-.badge {
-    padding: 6px 12px;
-    border-radius: 30px;
-    font-size: 12px;
-    font-weight: 600;
-}
-
-.badge-3 { background: #7c3aed; color: white; }
-.badge-4 { background: #9333ea; color: white; }
-.badge-5 { background: #c084fc; color: #1a1a23; }
-
-/* SPLASH */
-.splash {
-    position: fixed;
-    top:0; left:0;
-    width:100%; height:100%;
-    background:#0f0f14;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    z-index:9999;
-}
-
-.loader {
-    border: 4px solid #27272f;
-    border-top: 4px solid #a855f7;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    animation: spin 1s linear infinite;
-    margin-top: 20px;
-}
-
-@keyframes spin {
-    100% { transform: rotate(360deg); }
+.badge-3{background:#7c3aed;color:white}
+.badge-4{background:#9333ea;color:white}
+.badge-5{background:#c084fc;color:#1a1a23}
+.small-text{
+font-size:12px;
+color:#a1a1aa;
+margin-top:4px;
 }
 </style>
 </head>
 
 <body>
 
-<div id="splash" class="splash">
-    <img src="logo.png" width="200">
-    <div class="loader"></div>
-</div>
-
 <div class="header">
-    <img src="logo.png" class="logo">
-    <h1>HolidayMax 2026</h1>
+<img src="logo.png" class="logo">
+<h1>HolidayMax 2026</h1>
 </div>
 
 <div class="controls">
-    <select id="monthSelect"></select>
-    <select id="filterSelect">
-        <option value="all">All Stretches</option>
-        <option value="3">3+ Days</option>
-        <option value="4">4+ Days</option>
-    </select>
+<select id="monthSelect"></select>
+<select id="filterSelect">
+<option value="all">All Stretches</option>
+<option value="3">3+ Days</option>
+<option value="4">4+ Days</option>
+</select>
 </div>
 
 <div class="card">
-    <div class="section-title">Holidays</div>
-    <div id="holidayList"></div>
+<div class="section-title">Holidays</div>
+<div id="holidayList"></div>
 </div>
 
 <div class="card">
-    <div class="section-title">Smart Leave Suggestions</div>
-    <div id="recommendations"></div>
+<div class="section-title">Smart Leave Suggestions</div>
+<div id="recommendations"></div>
 </div>
 
 <script>
-const year = 2026;
+const year=2026;
 
-/* FULL DATASET */
-const fixedHolidays = {
-"2026-01-15":"Makara Sankranti",
+/* UPDATED FULL DATASET */
+const fixedHolidays={
+"2026-01-15":"Uttarayana Punyakala, Makara Sankranti",
 "2026-01-26":"Republic Day",
 "2026-02-15":"Mahashivaratri",
-"2026-03-19":"Ugadi",
+"2026-03-19":"Ugadi Festival",
 "2026-03-21":"Khutub-E-Ramzan",
 "2026-03-31":"Mahaveera Jayanthi",
-"2026-04-01":"Year Closing",
+"2026-04-01":"Yearly Closing of Bank Accounts",
 "2026-04-03":"Good Friday",
-"2026-04-14":"Ambedkar Jayanthi",
-"2026-04-20":"Basava Jayanthi",
+"2026-04-14":"Dr. B. R. Ambedkar Jayanthi",
+"2026-04-20":"Basava Jayanthi / Akshaya Tritiya",
 "2026-05-01":"May Day",
 "2026-05-28":"Bakrid",
-"2026-06-26":"Moharam",
+"2026-06-26":"Last Day of Moharam",
 "2026-08-15":"Independence Day",
 "2026-08-26":"Eid-Milad",
-"2026-09-03":"Kail Muhuruth",
-"2026-09-14":"Vinayaka Vratha",
+"2026-09-03":"Kail Muhuruth (Kodagu Only)",
+"2026-09-14":"Varasiddhi Vinayaka Vratha",
 "2026-10-02":"Gandhi Jayanthi",
-"2026-10-10":"Mahalaya",
-"2026-10-18":"Tula Sankramana",
-"2026-10-20":"Ayudha Pooja",
+"2026-10-10":"Mahalaya Amavasye",
+"2026-10-18":"Tula Sankramana (Kodagu Only)",
+"2026-10-20":"Mahanavami / Ayudhapooja",
 "2026-10-21":"Vijayadashami",
-"2026-10-25":"Valmiki Jayanthi",
+"2026-10-25":"Maharshi Valmiki Jayanthi",
 "2026-11-01":"Kannada Rajyothsava",
 "2026-11-08":"Naraka Chaturdashi",
-"2026-11-10":"Deepavali",
-"2026-11-26":"Huthri",
+"2026-11-10":"Balipadyami / Deepavali",
+"2026-11-26":"Huthri Festival (Kodagu Only)",
 "2026-11-27":"Kanakadasa Jayanthi",
 "2026-12-25":"Christmas"
 };
 
-let holidaySet = new Set(Object.keys(fixedHolidays));
+let holidaySet=new Set(Object.keys(fixedHolidays));
 
+/* ADD SUNDAYS + 2nd & 4th SATURDAY */
 for(let m=0;m<12;m++){
 for(let d=1;d<=31;d++){
 let date=new Date(year,m,d);
-if(date.getMonth()!==m) continue;
+if(date.getMonth()!==m)continue;
 let iso=date.toISOString().split("T")[0];
 
-if(date.getDay()===0) holidaySet.add(iso);
+if(date.getDay()===0)holidaySet.add(iso);
 
 if(date.getDay()===6){
 let week=Math.ceil(d/7);
-if(week===2||week===4) holidaySet.add(iso);
+if(week===2||week===4)holidaySet.add(iso);
 }
 }
 }
@@ -231,7 +173,7 @@ for(let i=0;i<12;i++){
 let option=document.createElement("option");
 option.value=i;
 option.text=new Date(year,i).toLocaleString('default',{month:'long'});
-if(i===selectedMonth) option.selected=true;
+if(i===selectedMonth)option.selected=true;
 monthSelect.appendChild(option);
 }
 
@@ -246,16 +188,17 @@ function render(){
 holidayDiv.innerHTML="";
 recommendDiv.innerHTML="";
 
+/* HOLIDAY LIST */
 for(let d=1;d<=31;d++){
 let date=new Date(year,selectedMonth,d);
-if(date.getMonth()!==selectedMonth) continue;
+if(date.getMonth()!==selectedMonth)continue;
 let iso=date.toISOString().split("T")[0];
 
 if(holidaySet.has(iso)){
 holidayDiv.innerHTML+=
 `<div class="holiday-item">
-<div class="date-big">${formatDate(date)}</div>
-<div>${fixedHolidays[iso] || "Weekend"}</div>
+<strong>${formatDate(date)}</strong><br>
+<span class="small-text">${fixedHolidays[iso]||"Weekend"}</span>
 </div>`;
 }
 }
@@ -269,34 +212,44 @@ let filterValue=filterSelect.value;
 for(let m=0;m<12;m++){
 for(let d=1;d<=31;d++){
 let date=new Date(year,m,d);
-if(date.getMonth()!==m) continue;
+if(date.getMonth()!==m)continue;
 let iso=date.toISOString().split("T")[0];
 
 if(!holidaySet.has(iso)){
-let count=1;
+
+let start=new Date(date);
+let end=new Date(date);
 
 let prev=new Date(date);
 prev.setDate(prev.getDate()-1);
 while(holidaySet.has(prev.toISOString().split("T")[0])){
-count++; prev.setDate(prev.getDate()-1);
+start=new Date(prev);
+prev.setDate(prev.getDate()-1);
 }
 
 let next=new Date(date);
 next.setDate(next.getDate()+1);
 while(holidaySet.has(next.toISOString().split("T")[0])){
-count++; next.setDate(next.getDate()+1);
+end=new Date(next);
+next.setDate(next.getDate()+1);
 }
 
-if(count>=3){
-if(filterValue==="3" && count<3) continue;
-if(filterValue==="4" && count<4) continue;
+let totalDays=Math.round((end-start)/(1000*60*60*24))+1;
 
-let badgeClass=count>=5?"badge-5":count>=4?"badge-4":"badge-3";
+if(totalDays>=3){
+
+if(filterValue==="3"&&totalDays<3)continue;
+if(filterValue==="4"&&totalDays<4)continue;
+
+let badgeClass=totalDays>=5?"badge-5":totalDays>=4?"badge-4":"badge-3";
 
 recommendDiv.innerHTML+=
 `<div class="holiday-item">
-<div>${formatDate(date)}</div>
-<div class="badge ${badgeClass}">${count} Days</div>
+<strong>Take Leave: ${formatDate(date)}</strong>
+<div class="badge ${badgeClass}">${totalDays} Days Stretch</div>
+<div class="small-text">
+From ${formatDate(start)} to ${formatDate(end)}
+</div>
 </div>`;
 }
 }
@@ -305,12 +258,6 @@ recommendDiv.innerHTML+=
 }
 
 render();
-
-window.onload=()=>{
-setTimeout(()=>{
-document.getElementById("splash").style.display="none";
-},1000);
-};
 
 if('serviceWorker' in navigator){
 navigator.serviceWorker.register('service-worker.js');
