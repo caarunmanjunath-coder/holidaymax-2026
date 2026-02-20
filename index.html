@@ -5,11 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HolidayMax 2026</title>
 
-<!-- PWA -->
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#5E2D79">
-
-<!-- App Icons -->
+<meta name="theme-color" content="#7c3aed">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
 <style>
@@ -17,15 +14,16 @@
 
 body {
     margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #5E2D79, #8E44AD);
-    color: white;
-    padding: 20px;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    background: #0f0f14;
+    color: #e4e4e7;
+    padding: 24px;
 }
 
+/* HEADER */
 .header {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
 }
 
 .logo {
@@ -38,43 +36,53 @@ body {
 h1 {
     margin: 0;
     font-weight: 600;
+    background: linear-gradient(90deg,#a855f7,#7c3aed);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
+/* CONTROLS */
 .controls {
     display: flex;
     justify-content: center;
-    gap: 15px;
-    margin-bottom: 25px;
+    gap: 16px;
+    margin-bottom: 30px;
     flex-wrap: wrap;
 }
 
 select {
-    padding: 10px 15px;
-    border-radius: 30px;
-    border: none;
+    padding: 10px 16px;
+    border-radius: 10px;
+    border: 1px solid #27272f;
+    background: #1a1a23;
+    color: #e4e4e7;
     font-size: 14px;
-    outline: none;
 }
 
+/* CARD */
 .card {
-    background: rgba(255,255,255,0.15);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 20px;
-    margin-bottom: 20px;
+    background: #1a1a23;
+    border-radius: 18px;
+    padding: 22px;
+    margin-bottom: 25px;
+    border: 1px solid #27272f;
+    box-shadow: 0 0 25px rgba(124,58,237,0.05);
 }
 
 .section-title {
-    font-size: 18px;
-    margin-bottom: 15px;
+    font-size: 14px;
+    margin-bottom: 18px;
     font-weight: 600;
+    color: #a855f7;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .holiday-item {
     display: flex;
     justify-content: space-between;
-    padding: 12px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.2);
+    padding: 14px 0;
+    border-bottom: 1px solid #27272f;
 }
 
 .holiday-item:last-child {
@@ -82,26 +90,29 @@ select {
 }
 
 .date-big {
-    font-size: 18px;
-    font-weight: 600;
+    font-size: 14px;
+    font-weight: 500;
+    color: #d4d4d8;
 }
 
+/* BADGES */
 .badge {
-    padding: 5px 12px;
-    border-radius: 20px;
+    padding: 6px 12px;
+    border-radius: 30px;
     font-size: 12px;
     font-weight: 600;
 }
 
-.badge-3 { background: #27AE60; }
-.badge-4 { background: #2980B9; }
-.badge-5 { background: #8E44AD; }
+.badge-3 { background: #7c3aed; color: white; }
+.badge-4 { background: #9333ea; color: white; }
+.badge-5 { background: #c084fc; color: #1a1a23; }
 
+/* SPLASH */
 .splash {
     position: fixed;
     top:0; left:0;
     width:100%; height:100%;
-    background:#5E2D79;
+    background:#0f0f14;
     display:flex;
     flex-direction:column;
     align-items:center;
@@ -110,8 +121,8 @@ select {
 }
 
 .loader {
-    border: 4px solid #ddd;
-    border-top: 4px solid white;
+    border: 4px solid #27272f;
+    border-top: 4px solid #a855f7;
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -159,9 +170,36 @@ select {
 <script>
 const year = 2026;
 
+/* FULL DATASET */
 const fixedHolidays = {
+"2026-01-15":"Makara Sankranti",
 "2026-01-26":"Republic Day",
+"2026-02-15":"Mahashivaratri",
+"2026-03-19":"Ugadi",
+"2026-03-21":"Khutub-E-Ramzan",
+"2026-03-31":"Mahaveera Jayanthi",
+"2026-04-01":"Year Closing",
+"2026-04-03":"Good Friday",
+"2026-04-14":"Ambedkar Jayanthi",
+"2026-04-20":"Basava Jayanthi",
+"2026-05-01":"May Day",
+"2026-05-28":"Bakrid",
+"2026-06-26":"Moharam",
 "2026-08-15":"Independence Day",
+"2026-08-26":"Eid-Milad",
+"2026-09-03":"Kail Muhuruth",
+"2026-09-14":"Vinayaka Vratha",
+"2026-10-02":"Gandhi Jayanthi",
+"2026-10-10":"Mahalaya",
+"2026-10-18":"Tula Sankramana",
+"2026-10-20":"Ayudha Pooja",
+"2026-10-21":"Vijayadashami",
+"2026-10-25":"Valmiki Jayanthi",
+"2026-11-01":"Kannada Rajyothsava",
+"2026-11-08":"Naraka Chaturdashi",
+"2026-11-10":"Deepavali",
+"2026-11-26":"Huthri",
+"2026-11-27":"Kanakadasa Jayanthi",
 "2026-12-25":"Christmas"
 };
 
@@ -174,6 +212,7 @@ if(date.getMonth()!==m) continue;
 let iso=date.toISOString().split("T")[0];
 
 if(date.getDay()===0) holidaySet.add(iso);
+
 if(date.getDay()===6){
 let week=Math.ceil(d/7);
 if(week===2||week===4) holidaySet.add(iso);
@@ -235,11 +274,13 @@ let iso=date.toISOString().split("T")[0];
 
 if(!holidaySet.has(iso)){
 let count=1;
+
 let prev=new Date(date);
 prev.setDate(prev.getDate()-1);
 while(holidaySet.has(prev.toISOString().split("T")[0])){
 count++; prev.setDate(prev.getDate()-1);
 }
+
 let next=new Date(date);
 next.setDate(next.getDate()+1);
 while(holidaySet.has(next.toISOString().split("T")[0])){
@@ -250,7 +291,7 @@ if(count>=3){
 if(filterValue==="3" && count<3) continue;
 if(filterValue==="4" && count<4) continue;
 
-let badgeClass = count>=5?"badge-5":count>=4?"badge-4":"badge-3";
+let badgeClass=count>=5?"badge-5":count>=4?"badge-4":"badge-3";
 
 recommendDiv.innerHTML+=
 `<div class="holiday-item">
@@ -268,7 +309,7 @@ render();
 window.onload=()=>{
 setTimeout(()=>{
 document.getElementById("splash").style.display="none";
-},1200);
+},1000);
 };
 
 if('serviceWorker' in navigator){
