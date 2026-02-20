@@ -48,7 +48,6 @@ border-radius:18px;
 padding:22px;
 margin-bottom:25px;
 border:1px solid #27272f;
-box-shadow:0 0 25px rgba(124,58,237,0.05);
 }
 .section-title{
 font-size:14px;
@@ -91,27 +90,21 @@ margin-top:4px;
 
 <div class="controls">
 <select id="monthSelect"></select>
-<select id="filterSelect">
-<option value="all">All Stretches</option>
-<option value="3">3+ Days</option>
-<option value="4">4+ Days</option>
-</select>
 </div>
 
 <div class="card">
-<div class="section-title">Holidays</div>
+<div class="section-title">Holidays (Selected Month)</div>
 <div id="holidayList"></div>
 </div>
 
 <div class="card">
-<div class="section-title">Smart Leave Suggestions</div>
+<div class="section-title">🔥 Best 5 Leave Opportunities (2026)</div>
 <div id="recommendations"></div>
 </div>
 
 <script>
 const year=2026;
 
-/* UPDATED FULL DATASET */
 const fixedHolidays={
 "2026-01-15":"Uttarayana Punyakala, Makara Sankranti",
 "2026-01-26":"Republic Day",
@@ -146,7 +139,7 @@ const fixedHolidays={
 
 let holidaySet=new Set(Object.keys(fixedHolidays));
 
-/* ADD SUNDAYS + 2nd & 4th SATURDAY */
+/* Add Sundays + 2nd & 4th Saturdays */
 for(let m=0;m<12;m++){
 for(let d=1;d<=31;d++){
 let date=new Date(year,m,d);
@@ -163,7 +156,6 @@ if(week===2||week===4)holidaySet.add(iso);
 }
 
 const monthSelect=document.getElementById("monthSelect");
-const filterSelect=document.getElementById("filterSelect");
 const holidayDiv=document.getElementById("holidayList");
 const recommendDiv=document.getElementById("recommendations");
 
@@ -177,8 +169,10 @@ if(i===selectedMonth)option.selected=true;
 monthSelect.appendChild(option);
 }
 
-monthSelect.addEventListener("change",()=>{selectedMonth=parseInt(monthSelect.value);render();});
-filterSelect.addEventListener("change",render);
+monthSelect.addEventListener("change",()=>{
+selectedMonth=parseInt(monthSelect.value);
+render();
+});
 
 function formatDate(date){
 return date.toLocaleDateString('en-IN',{day:'numeric',month:'short',weekday:'short'});
@@ -188,7 +182,7 @@ function render(){
 holidayDiv.innerHTML="";
 recommendDiv.innerHTML="";
 
-/* HOLIDAY LIST */
+/* Show selected month holidays */
 for(let d=1;d<=31;d++){
 let date=new Date(year,selectedMonth,d);
 if(date.getMonth()!==selectedMonth)continue;
@@ -203,58 +197,139 @@ holidayDiv.innerHTML+=
 }
 }
 
-generateStretch();
+generateBestOpportunities();
 }
 
-function generateStretch(){
-let filterValue=filterSelect.value;
+function generateBestOpportunities(){
+
+let suggestions=[];
 
 for(let m=0;m<12;m++){
 for(let d=1;d<=31;d++){
-let date=new Date(year,m,d);
-if(date.getMonth()!==m)continue;
-let iso=date.toISOString().split("T")[0];
 
-if(!holidaySet.has(iso)){
+let leave1=new Date(year,m,d);
+if(leave1.getMonth()!==m)continue;
+let iso1=leave1.toISOString().split("T")[0];
+if(holidaySet.has(iso1))continue;
 
-let start=new Date(date);
-let end=new Date(date);
-
-let prev=new Date(date);
+/* 1-Day Bridge */
+let prev=new Date(leave1);
 prev.setDate(prev.getDate()-1);
-while(holidaySet.has(prev.toISOString().split("T")[0])){
-start=new Date(prev);
-prev.setDate(prev.getDate()-1);
+let next=new Date(leave1);
+next.setDate(next.getDate()+1);
+
+if(holidaySet.has(prev.toISOString().split("T")[0]) &&
+   holidaySet.has(next.toISOString().split("T")[0])){
+
+let start=new Date(prev);
+while(holidaySet.has(start.toISOString().split("T")[0])){
+start.setDate(start.getDate()-1);
+}
+start.setDate(start.getDate()+1);
+
+let end=new Date(next);
+while(holidaySet.has(end.toISOString().split("T")[0])){
+end.setDate(end.getDate()+1);
+}
+end.setDate(end.getDate()-1);
+
+if(leave1<start)start=new Date(leave1);
+if(leave1>end)end=new Date(leave1);
+
+let total=Math.round((end-start)/(1000*60*60*24))+1;
+
+if(total>=3){
+suggestions.push({
+leaveDates:[new Date(leave1)],
+start:new Date(start),
+end:new Date(end),
+totalDays:total
+});
+}
 }
 
-let next=new Date(date);
-next.setDate(next.getDate()+1);
-while(holidaySet.has(next.toISOString().split("T")[0])){
-end=new Date(next);
-next.setDate(next.getDate()+1);
+/* 2-Day Bridge */
+let leave2=new Date(leave1);
+leave2.setDate(leave2.getDate()+1);
+let iso2=leave2.toISOString().split("T")[0];
+
+if(!holidaySet.has(iso2)){
+
+let prev2=new Date(leave1);
+prev2.setDate(prev2.getDate()-1);
+let next2=new Date(leave2);
+next2.setDate(next2.getDate()+1);
+
+if(holidaySet.has(prev2.toISOString().split("T")[0]) &&
+   holidaySet.has(next2.toISOString().split("T")[0])){
+
+let start=new Date(prev2);
+while(holidaySet.has(start.toISOString().split("T")[0])){
+start.setDate(start.getDate()-1);
+}
+start.setDate(start.getDate()+1);
+
+let end=new Date(next2);
+while(holidaySet.has(end.toISOString().split("T")[0])){
+end.setDate(end.getDate()+1);
+}
+end.setDate(end.getDate()-1);
+
+if(leave1<start)start=new Date(leave1);
+if(leave2>end)end=new Date(leave2);
+
+let total=Math.round((end-start)/(1000*60*60*24))+1;
+
+if(total>=4){
+suggestions.push({
+leaveDates:[new Date(leave1),new Date(leave2)],
+start:new Date(start),
+end:new Date(end),
+totalDays:total
+});
+}
+}
 }
 
-let totalDays=Math.round((end-start)/(1000*60*60*24))+1;
+}
+}
 
-if(totalDays>=3){
+/* Sort by highest stretch */
+suggestions.sort((a,b)=>b.totalDays-a.totalDays);
 
-if(filterValue==="3"&&totalDays<3)continue;
-if(filterValue==="4"&&totalDays<4)continue;
+/* Remove overlaps */
+let filtered=[];
+for(let s of suggestions){
+let overlap=false;
+for(let f of filtered){
+if(!(s.end < f.start || s.start > f.end)){
+overlap=true;
+break;
+}
+}
+if(!overlap) filtered.push(s);
+}
 
-let badgeClass=totalDays>=5?"badge-5":totalDays>=4?"badge-4":"badge-3";
+/* Take Best 5 */
+filtered=filtered.slice(0,5);
+
+for(let s of filtered){
+
+let badgeClass=s.totalDays>=5?"badge-5":
+               s.totalDays>=4?"badge-4":"badge-3";
+
+let leaveText=s.leaveDates.map(d=>formatDate(d)).join(" & ");
 
 recommendDiv.innerHTML+=
 `<div class="holiday-item">
-<strong>Take Leave: ${formatDate(date)}</strong>
-<div class="badge ${badgeClass}">${totalDays} Days Stretch</div>
+<strong>Take Leave: ${leaveText}</strong>
+<div class="badge ${badgeClass}">${s.totalDays} Days Stretch</div>
 <div class="small-text">
-From ${formatDate(start)} to ${formatDate(end)}
+From ${formatDate(s.start)} to ${formatDate(s.end)}
 </div>
 </div>`;
 }
-}
-}
-}
+
 }
 
 render();
