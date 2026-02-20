@@ -92,4 +92,3 @@ Use as standalone app
 👤 Author
 
 Arun Manjunath
-Banking Strategy & Finance
